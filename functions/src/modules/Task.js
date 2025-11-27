@@ -13,10 +13,14 @@ app.use(express.json());
 app.post("/", taskController.createTask);
 app.post("/", taskController.createTask);
 app.get("/", taskController.getTasksByDate);
+app.get("/:uid/today", taskController.getTodayTasks);
+app.get("/:taskId/duration", taskController.getTaskTimerDuration);
 app.get("/:uid", taskController.getAllTasksByUser);
 app.put("/", taskController.updateTask);
 app.delete("/", taskController.deleteTask);
 app.post("/toggle", taskController.toggleCompleteTask);
+
+
 
 // Export the Express app as a single Cloud Function
 exports.task = onRequest({cors: true}, app);
