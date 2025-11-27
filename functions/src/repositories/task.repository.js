@@ -7,8 +7,10 @@ async function create(uid, data) {
   const taskData = {
     uid,
     titulo: data.titulo,
+    fecha: data.fecha, // Formato: "YYYY-MM-DD" (ej: "2025-11-27")
+    horarioInicial: data.horarioInicial, // Formato: "HH:MM" (ej: "16:00")
+    horarioFinal: data.horarioFinal, // Formato: "HH:MM" (ej: "18:00")
     descripcion: data.descripcion || null,
-    fecha: data.fecha, // YYYY-MM-DD
     completada: false,
     creadoEn: admin.firestore.FieldValue.serverTimestamp(),
   };

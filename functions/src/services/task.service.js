@@ -63,6 +63,44 @@ async function checkAndUpdateRacha(uid, date) {
   }
 }
 
+async function getTaskTimerDuration(taskId) {
+  const task = await taskRepository.getById(taskId);
+  if (!task) throw new Error("Tarea no encontrada");
+
+  // Calcular duración en segundos
+  const [horaInicio, minutoInicio] = task.horarioInicial.split(":").map(Number);
+  const [horaFin, minutoFin] = task.horarioFinal.split(":").map(Number);
+
+  const minutosInicio = horaInicio * 60 + minutoInicio;
+  const minutosFin = horaFin * 60 + minutoFin;
+  const duracionMinutos = minutosFin - minutosInicio;
+
+  if (duracionMinutos <= 0) {
+    throw new Error("El horario final debe ser posterior al horario inicial");
+  }
+
+  return {
+    taskId: task.id,
+    titulo: task.titulo,
+    horarioInicial: task.horarioInicial,
+    horarioFinal: task.horarioFinal,
+    duracionSegundos: duracionMinutos * 60,
+    duracionMinutos: duracionMinutos,
+    duracionHoras: (duracionMinutos / 60).toFixed(2),
+  };
+}
+
+async function getTodayTasks(uid) {
+  // Obtener fecha de hoy en formato YYYY-MM-DD
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const todayDate = `${year}-${month}-${day}`;
+
+  return await taskRepository.getByDate(uid, todayDate);
+}
+
 module.exports = {
   createTask,
   getTasksByDate,
@@ -70,4 +108,6 @@ module.exports = {
   updateTask,
   deleteTask,
   toggleCompleteTask,
+  getTaskTimerDuration,
+  getTodayTasks,
 };
