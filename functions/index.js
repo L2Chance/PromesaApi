@@ -68,10 +68,13 @@ exports.api = onRequest(
  * Cloud Functions del módulo Profile
  */
 const profileModule = require("./src/modules/Profile");
-exports.getProfile = profileModule.getProfile;
-exports.updateProfile = profileModule.updateProfile;
-exports.uploadProfileImage = profileModule.uploadProfileImage;
-exports.manageRacha = profileModule.manageRacha;
+exports.profile = profileModule.profile;
+
+/**
+ * Cloud Functions del módulo Task
+ */
+const taskModule = require("./src/modules/Task");
+exports.task = taskModule.task;
 
 /**
  * Función disparada por Authentication
